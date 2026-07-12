@@ -86,12 +86,14 @@ function initVideoPlayer() {
 
   video.currentTime = 20;
 
-  const playBtn = document.querySelector('[data-action="play"]');
+  const playBtn = document.querySelector('#videoPlayBtn');
+  const playIcon = playBtn?.querySelector('.material-symbols-outlined');
   const seek = document.querySelector('.video-native__seek');
   const volume = document.querySelector('.video-native__volume');
   const timeDisplay = document.querySelector('.video-native__time');
-  const volBtn = document.querySelector('[data-action="volume"]');
-  const fsBtn = document.querySelector('[data-action="fullscreen"]');
+  const volBtn = document.querySelector('#videoMuteBtn');
+  const volIcon = volBtn?.querySelector('.material-symbols-outlined');
+  const fsBtn = document.querySelector('#videoFullscreenBtn');
   const wrapper = document.querySelector('.video-native');
 
   function formatTime(s) {
@@ -111,12 +113,10 @@ function initVideoPlayer() {
   video.addEventListener('timeupdate', updateTime);
 
   video.addEventListener('play', () => {
-    playBtn.textContent = 'pause';
-    playBtn.setAttribute('data-action', 'pause');
+    if (playIcon) playIcon.textContent = 'pause';
   });
   video.addEventListener('pause', () => {
-    playBtn.textContent = 'play_arrow';
-    playBtn.setAttribute('data-action', 'play');
+    if (playIcon) playIcon.textContent = 'play_arrow';
   });
 
   playBtn?.addEventListener('click', () => {
@@ -128,12 +128,12 @@ function initVideoPlayer() {
   });
 
   volume?.addEventListener('input', () => {
-    video.volume = volume.value / 100;
+    video.volume = parseFloat(volume.value);
   });
 
   volBtn?.addEventListener('click', () => {
     video.muted = !video.muted;
-    volBtn.textContent = video.muted ? 'volume_off' : 'volume_up';
+    if (volIcon) volIcon.textContent = video.muted ? 'volume_off' : 'volume_up';
   });
 
   fsBtn?.addEventListener('click', () => {
@@ -145,8 +145,7 @@ function initVideoPlayer() {
   });
 
   video.addEventListener('ended', () => {
-    playBtn.textContent = 'replay';
-    playBtn.setAttribute('data-action', 'play');
+    if (playIcon) playIcon.textContent = 'replay';
   });
 }
 
@@ -154,26 +153,31 @@ function initVideoPlayer() {
 function initForum() {
   const data = getForumData();
   const threadsList = document.querySelector('.forum__threads');
-  const newThreadForm = document.querySelector('.new-thread-form');
-  const newThreadBtn = document.querySelector('[data-action="new-thread"]');
-  const toggleBtn = document.querySelector('[data-action="toggle-new-thread"]');
+  const newThreadForm = document.querySelector('#newThreadForm');
+  const toggleBtn = document.querySelector('#newDiscussionBtn');
+  const cancelBtn = document.querySelector('#cancelThreadBtn');
+  const submitBtn = document.querySelector('#submitThreadBtn');
 
   renderThreads(data, threadsList);
 
   toggleBtn?.addEventListener('click', () => {
-    const form = newThreadForm;
-    const isOpen = form.style.display !== 'none';
-    form.style.display = isOpen ? 'none' : 'flex';
-    toggleBtn.textContent = isOpen ? 'edit_note' : 'close';
-    toggleBtn.setAttribute('data-action', isOpen ? 'new-thread' : 'toggle-new-thread');
+    const isOpen = newThreadForm.style.display !== 'none';
+    newThreadForm.style.display = isOpen ? 'none' : 'flex';
+    toggleBtn.querySelector('.material-symbols-outlined').textContent = isOpen ? 'add' : 'close';
   });
 
-  newThreadForm?.addEventListener('submit', e => {
+  cancelBtn?.addEventListener('click', () => {
+    newThreadForm.style.display = 'none';
+    newThreadForm.reset();
+    toggleBtn.querySelector('.material-symbols-outlined').textContent = 'add';
+  });
+
+  submitBtn?.addEventListener('click', e => {
     e.preventDefault();
-    const title = newThreadForm.querySelector('input[placeholder="Título de tu discusión"]').value.trim();
-    const body = newThreadForm.querySelector('textarea').value.trim();
-    const tag = newThreadForm.querySelector('select').value;
-    const author = newThreadForm.querySelector('input[placeholder="Tu nombre (opcional)"]').value.trim() || 'Anónimo';
+    const title = document.querySelector('#newThreadTitle').value.trim();
+    const body = document.querySelector('#newThreadBody').value.trim();
+    const tag = document.querySelector('#newThreadTag').value;
+    const author = document.querySelector('#newThreadAuthor').value.trim() || 'Anónimo';
     if (!title || !body) return;
     data.unshift({
       id: Date.now(),
@@ -188,8 +192,7 @@ function initForum() {
     renderThreads(data, threadsList);
     newThreadForm.reset();
     newThreadForm.style.display = 'none';
-    toggleBtn.textContent = 'edit_note';
-    toggleBtn.setAttribute('data-action', 'new-thread');
+    toggleBtn.querySelector('.material-symbols-outlined').textContent = 'add';
   });
 
   threadsList?.addEventListener('click', e => {
