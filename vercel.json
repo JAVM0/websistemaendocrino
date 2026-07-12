@@ -1,6 +1,6 @@
 {
-  "rewrites": [
-    { "src": "/(.*)", "dest": "/index.html" }
+  "routes": [
+    { "source": "/(.*)", "dest": "/index.html" }
   ],
   "version": 2,
   "cleanUrls": true,
