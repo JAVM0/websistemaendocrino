@@ -16,6 +16,14 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'styles.css'));
+});
+
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'main.js'));
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor http://localhost:${PORT}`);
 });
