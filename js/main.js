@@ -1,5 +1,5 @@
 /* ============================================
-   EndoAcademia - Script Principal
+  EndoAcademia - Script Principal
    ============================================ */
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
@@ -292,6 +292,12 @@ function renderThreads(data, container) {
         <span class="material-symbols-outlined">expand_more</span>
       </button>
     </div>`).join('');
+}
+
+function scrollToSection(hash) {
+  const target = document.querySelector(hash);
+  if (!target) return;
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function getForumData() {
