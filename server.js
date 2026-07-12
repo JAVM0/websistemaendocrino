@@ -16,11 +16,11 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/css', (_req, res) => {
+app.get('*/css', (_req, res) => {
   res.sendFile(path.join(__dirname, 'styles.css'));
 });
 
-app.get('/js', (_req, res) => {
+app.get('*/js', (_req, res) => {
   res.sendFile(path.join(__dirname, 'main.js'));
 });
 
