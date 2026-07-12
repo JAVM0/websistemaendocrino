@@ -1,8 +1,0 @@
-{
-  "routes": [
-    { "source": "/(.*)", "dest": "/index.html" }
-  ],
-  "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": false
-}
